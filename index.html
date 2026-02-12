@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For Nilakshi 🎀</title>
+    <title>For Nilakshi 🌹</title>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --pink: #ffb7c5;
             --dark-pink: #ff8fa3;
-            --nykaa-pink: #fc2779;
+            --rose-red: #e02142;
         }
 
         body {
@@ -22,12 +22,50 @@
             justify-content: center;
             min-height: 100vh;
             margin: 0;
-            overflow-x: hidden;
+            overflow: hidden;
         }
 
-        /* TIMER */
+        /* --- WELCOME OVERLAY --- */
+        #welcome-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #fff0f3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 1s ease-out;
+        }
+
+        .rose-container {
+            cursor: pointer;
+            transition: transform 0.3s;
+            text-align: center;
+        }
+
+        .rose-container:hover { transform: scale(1.1); }
+
+        .rose-img {
+            width: 200px;
+            filter: drop-shadow(0 10px 15px rgba(224, 33, 66, 0.3));
+            animation: breathe 3s infinite ease-in-out;
+        }
+
+        .click-text {
+            margin-top: 20px;
+            font-family: 'Pacifico', cursive;
+            color: var(--rose-red);
+            font-size: 1.5rem;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+
+        /* --- MAIN CONTENT --- */
         #timer {
-            font-family: 'Quicksand', sans-serif;
             background: white;
             padding: 10px 20px;
             border-radius: 50px;
@@ -36,21 +74,11 @@
             font-weight: bold;
             margin-bottom: 20px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            z-index: 100;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-            z-index: 10;
-        }
-
-        h1 {
-            font-family: 'Pacifico', cursive;
-            color: var(--dark-pink);
-            font-size: 2.2rem;
-            text-shadow: 2px 2px white;
-            margin: 0;
-        }
+        .header { text-align: center; margin-bottom: 20px; z-index: 10; }
+        h1 { font-family: 'Pacifico', cursive; color: var(--dark-pink); font-size: 2.2rem; text-shadow: 2px 2px white; margin: 0; }
 
         .main-stage {
             min-height: 350px;
@@ -59,155 +87,65 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            perspective: 1000px; /* For 3D effects */
+            perspective: 1000px;
         }
 
-        /* --- STAGE 1: INITIAL CHOICE --- */
-        .choice-container {
-            display: flex;
-            gap: 30px;
-            z-index: 10;
-            transition: opacity 0.5s ease;
-        }
-
+        /* STAGE 1: CHOICE */
+        .choice-container { display: flex; gap: 30px; z-index: 10; }
         .card {
-            width: 180px;
-            height: 260px;
-            background: white;
-            border: 5px solid var(--pink);
-            border-radius: 20px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Pacifico', cursive;
-            font-size: 1.4rem;
-            text-align: center;
-            color: transparent;
-            transition: all 0.4s ease;
-            position: relative;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            background-image: url('https://img.icons8.com/color/96/hello-kitty.png');
-            background-repeat: no-repeat;
-            background-position: center 40%;
-            background-size: 80px;
+            width: 180px; height: 260px; background: white; border: 5px solid var(--pink); border-radius: 20px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; font-family: 'Pacifico', cursive;
+            font-size: 1.4rem; text-align: center; color: transparent; transition: all 0.4s ease; position: relative;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05); background-image: url('https://img.icons8.com/color/96/hello-kitty.png');
+            background-repeat: no-repeat; background-position: center 40%; background-size: 80px;
         }
-
         .card::after { content: '🎀'; position: absolute; top: -20px; font-size: 35px; }
         .card:hover { transform: translateY(-10px) scale(1.05); }
 
-        /* --- STAGE 2A: MYSTERY BOXES (Hidden Initially) --- */
-        .mystery-container {
-            display: none;
-            gap: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
+        /* STAGE 2A: MYSTERY BOXES */
+        .mystery-container { display: none; gap: 20px; flex-wrap: wrap; justify-content: center; }
         .mystery-box {
-            width: 140px;
-            height: 180px;
-            background: var(--pink);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            position: relative;
+            width: 140px; height: 180px; background: var(--pink); border-radius: 15px; display: flex;
+            align-items: center; justify-content: center; cursor: pointer; transition: transform 0.6s; box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
+        .box-cover { font-size: 3rem; color: white; animation: bounce 2s infinite; }
 
-        .mystery-box:hover { transform: scale(1.05); }
-
-        .mystery-content {
-            display: none; /* Hidden until clicked */
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            animation: fadeIn 0.5s;
-        }
-        
-        .box-cover {
-            font-size: 3rem;
-            color: white;
-            animation: bounce 2s infinite;
-        }
-
-        /* Revealed Item Styles */
-        .shop-icon { font-size: 40px; margin-bottom: 5px; }
-        .shop-title { font-weight: bold; color: #555; font-size: 0.9rem; }
-        .shop-price { color: var(--dark-pink); font-family: 'Pacifico'; }
-
-        /* --- STAGE 2B: FLYING NYKAA CARD (Hidden Initially) --- */
-        .nykaa-container {
-            display: none; /* Flex when active */
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
+        /* STAGE 2B: NYKAA CARD */
+        .nykaa-container { display: none; flex-direction: column; align-items: center; justify-content: center; }
         .nykaa-card {
-            width: 320px;
-            height: 200px;
-            background: linear-gradient(135deg, #fc2779 0%, #ff7cae 100%);
-            border-radius: 15px;
-            box-shadow: 0 20px 50px rgba(252, 39, 121, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            position: relative;
-            border: 2px solid white;
-            /* Animation applied via JS */
+            width: 320px; height: 200px; background: linear-gradient(135deg, #fc2779 0%, #ff7cae 100%);
+            border-radius: 15px; box-shadow: 0 20px 50px rgba(252, 39, 121, 0.4); display: flex;
+            align-items: center; justify-content: center; color: white; border: 2px solid white;
         }
-
-        /* The Flying Animation Class */
-        .fly-in {
-            animation: flyInFromLeft 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-
-        @keyframes flyInFromLeft {
-            0% {
-                transform: translate(-100vw, 100vh) rotate(-720deg) scale(0.1);
-                opacity: 0;
-            }
-            60% {
-                transform: translate(0, 0) rotate(10deg) scale(1.1);
-                opacity: 1;
-            }
-            100% {
-                transform: translate(0, 0) rotate(0deg) scale(1);
-            }
-        }
-
-        .nykaa-logo {
-            font-family: 'Arial', sans-serif;
-            font-weight: 900;
-            font-size: 3rem;
-            letter-spacing: -2px;
-        }
-
-        .final-msg {
-            margin-top: 30px;
-            font-size: 1.3rem;
-            color: var(--dark-pink);
-            font-weight: 700;
-            opacity: 0;
-            transition: opacity 1s;
-        }
-
-        /* General Keyframes */
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes floatUp { 0% { transform: translateY(110vh) rotate(0deg); } 100% { transform: translateY(-10vh) rotate(360deg); } }
+        .fly-in { animation: flyInFromLeft 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         
+        @keyframes flyInFromLeft {
+            0% { transform: translate(-100vw, 100vh) rotate(-720deg) scale(0.1); opacity: 0; }
+            100% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+        }
+        .nykaa-logo { font-family: 'Arial', sans-serif; font-weight: 900; font-size: 3.5rem; letter-spacing: -2px; }
+
+        .final-msg { margin-top: 30px; font-size: 1.3rem; color: var(--dark-pink); font-weight: 700; opacity: 0; transition: opacity 1s; }
+
+        /* UTILS */
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         .floating { position: absolute; font-size: 24px; animation: floatUp 6s infinite linear; opacity: 0.6; z-index: 1; }
+        @keyframes floatUp { 0% { transform: translateY(110vh); } 100% { transform: translateY(-10vh); } }
+
+        #youtube-player { position: absolute; width: 0; height: 0; pointer-events: none; opacity: 0; }
     </style>
 </head>
 <body>
 
+    <div id="welcome-overlay" onclick="startSurprise()">
+        <div class="rose-container">
+            <img src="https://img.icons8.com/color/480/rose.png" class="rose-img" alt="Beautiful Rose">
+            <div class="click-text">Click the rose for a surprise, Nilakshi... 🌹</div>
+        </div>
+    </div>
+
+    <div id="youtube-player"></div>
+    
     <div id="timer">Loading timer...</div>
 
     <div class="header">
@@ -216,134 +154,93 @@
     </div>
 
     <div class="main-stage">
-        
         <div class="choice-container" id="step1">
             <div class="card" onclick="handleChoice('hers')"></div>
             <div class="card" onclick="handleChoice('mine')"></div>
         </div>
 
         <div class="mystery-container" id="step2-hers">
-            <div class="mystery-box" onclick="revealMystery(this, '👜', 'Perfect Bag', '1500')">
-                <div class="box-cover">❓</div>
-            </div>
-            <div class="mystery-box" onclick="revealMystery(this, '👠', 'Dream Shoes', '2000')">
-                <div class="box-cover">❓</div>
-            </div>
-            <div class="mystery-box" onclick="revealMystery(this, '💄', 'Makeup Kit', '1500')">
-                <div class="box-cover">❓</div>
-            </div>
+            <div class="mystery-box" onclick="revealMystery(this, '👜', 'Perfect Bag', '1500')"><div class="box-cover">❓</div></div>
+            <div class="mystery-box" onclick="revealMystery(this, '👠', 'Dream Shoes', '2000')"><div class="box-cover">❓</div></div>
+            <div class="mystery-box" onclick="revealMystery(this, '💄', 'Makeup Kit', '1500')"><div class="box-cover">❓</div></div>
         </div>
 
         <div class="nykaa-container" id="step2-mine">
-            <div class="nykaa-card" id="nykaa-card-el">
-                <div class="nykaa-logo">NYKAA</div>
-            </div>
+            <div class="nykaa-card" id="nykaa-card-el"><div class="nykaa-logo">NYKAA</div></div>
         </div>
-
     </div>
 
     <div class="final-msg" id="final-msg"></div>
 
     <script>
-        // --- TIMER LOGIC ---
+        // --- YOUTUBE PLAYER ---
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtube-player', {
+                height: '0', width: '0',
+                videoId: 'G_x-UJNEmEU',
+                playerVars: { 'autoplay': 0, 'loop': 1, 'playlist': 'G_x-UJNEmEU' }
+            });
+        }
+
+        // Load YT API
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // --- OVERLAY LOGIC ---
+        function startSurprise() {
+            document.getElementById('welcome-overlay').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('welcome-overlay').style.display = 'none';
+            }, 1000);
+            if(player && player.playVideo) player.playVideo(); // Start "Aao Naa"
+        }
+
+        // --- TIMER ---
         function updateTimer() {
-            const now = new Date();
-            const year = now.getFullYear();
-            // Target Feb 14th of current year
-            let vDay = new Date(`February 14, ${year} 00:00:00`);
-            
-            // If passed, target next year
-            if (now > vDay) {
-                vDay = new Date(`February 14, ${year + 1} 00:00:00`);
-            }
-
-            const diff = vDay - now;
-            
-            if(diff <= 0) {
-                document.getElementById("timer").innerText = "Happy Valentine's Day! 💖";
-                return;
-            }
-
-            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((diff % (1000 * 60)) / 1000);
-            
+            const vDay = new Date(`February 14, ${new Date().getFullYear()} 00:00:00`);
+            const diff = vDay - new Date();
+            if(diff <= 0) { document.getElementById("timer").innerText = "Happy Valentine's Day! 💖"; return; }
+            const d = Math.floor(diff/86400000), h = Math.floor((diff%86400000)/3600000), m = Math.floor((diff%3600000)/60000), s = Math.floor((diff%60000)/1000);
             document.getElementById("timer").innerText = `Valentine's in: ${d}d ${h}h ${m}m ${s}s`;
         }
         setInterval(updateTimer, 1000);
-        updateTimer();
 
-        // --- CHOICE LOGIC ---
         function handleChoice(type) {
-            const step1 = document.getElementById('step1');
-            const step2Hers = document.getElementById('step2-hers');
-            const step2Mine = document.getElementById('step2-mine');
-            const msg = document.getElementById('final-msg');
-
-            // 1. Reveal Text on the initial card
             const cards = document.querySelectorAll('.card');
-            if(type === 'hers') {
-                cards[0].style.background = '#ffb7c5';
-                cards[0].innerText = "I will choose!";
-            } else {
-                cards[1].style.background = '#ffb7c5';
-                cards[1].innerText = "You will choose!";
-            }
+            if(type === 'hers') { cards[0].style.background = '#ffb7c5'; cards[0].innerText = "I will choose!"; } 
+            else { cards[1].style.background = '#ffb7c5'; cards[1].innerText = "You will choose!"; }
 
-            // 2. Transition
             setTimeout(() => {
-                step1.style.display = 'none';
-
+                document.getElementById('step1').style.display = 'none';
                 if(type === 'hers') {
-                    // Show Mystery Boxes
-                    step2Hers.style.display = 'flex';
-                    msg.innerText = "Tap a box to reveal your gift! 🎁";
-                    msg.style.opacity = '1';
+                    document.getElementById('step2-hers').style.display = 'flex';
+                    document.getElementById('final-msg').innerText = "Tap a box Nilakshi! 🎁";
                 } else {
-                    // Show Flying Nykaa Card
-                    step2Mine.style.display = 'flex';
-                    const nykaaCard = document.getElementById('nykaa-card-el');
-                    nykaaCard.classList.add('fly-in'); // Trigger Animation
-                    
-                    msg.innerText = "You own a NYKAA Gift Card! 💄";
-                    msg.style.opacity = '1';
-                    createBows();
+                    document.getElementById('step2-mine').style.display = 'flex';
+                    document.getElementById('nykaa-card-el').classList.add('fly-in');
+                    document.getElementById('final-msg').innerText = "You own a NYKAA Gift Card! 💄";
                 }
+                document.getElementById('final-msg').style.opacity = '1';
+                createBows();
             }, 800);
         }
 
-        // --- MYSTERY BOX REVEAL LOGIC ---
         function revealMystery(box, icon, title, price) {
-            // If already opened, do nothing
             if(box.style.background === 'white') return;
-
-            // Change Style to White Card
-            box.style.background = 'white';
-            box.style.border = '3px solid var(--pink)';
-            
-            // Inject Content
-            box.innerHTML = `
-                <div class="mystery-content" style="display:flex">
-                    <div class="shop-icon">${icon}</div>
-                    <div class="shop-title">${title}</div>
-                    <div class="shop-price">₹${price}</div>
-                </div>
-            `;
-            
-            // Update Message
+            box.style.background = 'white'; box.style.border = '3px solid var(--pink)';
+            box.innerHTML = `<div style="display:flex;flex-direction:column;align-items:center;"><div style="font-size:40px">${icon}</div><div style="font-weight:bold;color:#555;font-size:0.9rem">${title}</div><div style="color:var(--dark-pink);font-family:'Pacifico'">₹${price}</div></div>`;
             document.getElementById('final-msg').innerText = "Yay! Getting you " + title;
-            createBows();
         }
 
-        // --- BACKGROUND BOWS ---
         function createBows() {
-            const icons = ['🎀', '🌸', '💖', '🐱'];
             const bow = document.createElement('div');
             bow.classList.add('floating');
-            bow.innerText = icons[Math.floor(Math.random() * icons.length)];
-            bow.style.left = Math.random() * 100 + 'vw';
-            bow.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            bow.innerText = ['🎀', '🌸', '💖', '🌹', '🐱'][Math.floor(Math.random()*5)];
+            bow.style.left = Math.random()*100+'vw';
+            bow.style.animationDuration = (Math.random()*3+4)+'s';
             document.body.appendChild(bow);
             setTimeout(() => bow.remove(), 6000);
         }
