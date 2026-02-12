@@ -119,4 +119,225 @@
             width: 140px;
             height: 180px;
             background: white;
-            border
+            border: 3px dashed var(--dark-pink);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .shop-card:hover {
+            transform: scale(1.1);
+            background: #fff5f8;
+        }
+
+        .shop-icon { font-size: 40px; margin-bottom: 10px; }
+        .shop-title { font-weight: bold; color: #555; font-size: 0.9rem; }
+        .shop-price { color: var(--dark-pink); font-family: 'Pacifico'; margin-top: 5px; }
+
+        /* --- STEP 2: The Nykaa Gift (Hidden Initially) --- */
+        .nykaa-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        .nykaa-card {
+            width: 300px;
+            height: 180px;
+            background: linear-gradient(135deg, #fc2779 0%, #ff7cae 100%);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(252, 39, 121, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-family: 'Pacifico';
+            position: relative;
+            overflow: hidden;
+            border: 2px solid white;
+        }
+        
+        .nykaa-logo-text {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            letter-spacing: 2px;
+            font-size: 2.5rem;
+        }
+
+        .final-msg {
+            margin-top: 30px;
+            font-size: 1.3rem;
+            color: var(--dark-pink);
+            font-weight: 700;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+
+        /* Animations */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes popIn {
+            from { transform: scale(0); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(110vh) rotate(0deg); }
+            100% { transform: translateY(-10vh) rotate(360deg); }
+        }
+
+        .floating {
+            position: absolute;
+            font-size: 24px;
+            animation: floatUp 6s infinite linear;
+            opacity: 0.6;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="timer">Valentine's in: 00d 00h 00m 00s</div>
+
+    <div class="header">
+        <h1>For My Favorite Person...</h1>
+        <p style="color: #ff8fa3;">Pick a mystery card Nilakshi 🌸</p>
+    </div>
+
+    <div class="main-stage">
+        
+        <div class="choice-container" id="step1">
+            <div class="card" onclick="handleChoice('hers')"></div>
+            <div class="card" onclick="handleChoice('mine')"></div>
+        </div>
+
+        <div class="shopping-container" id="step2-hers">
+            <div class="shop-card" onclick="selectFinal('A Perfect Bag! 👜')">
+                <div class="shop-icon">👜</div>
+                <div class="shop-title">Perfect Bag</div>
+                <div class="shop-price">1500</div>
+            </div>
+            <div class="shop-card" onclick="selectFinal('Cinderella Shoes! 👠')">
+                <div class="shop-icon">👠</div>
+                <div class="shop-title">Dream Shoes</div>
+                <div class="shop-price">2000</div>
+            </div>
+            <div class="shop-card" onclick="selectFinal('Makeup Kit! 💄')">
+                <div class="shop-icon">💄</div>
+                <div class="shop-title">Any Makeup</div>
+                <div class="shop-price">1500</div>
+            </div>
+        </div>
+
+        <div class="nykaa-container" id="step2-mine">
+            <div class="nykaa-card">
+                <span class="nykaa-logo-text">NYKAA</span>
+            </div>
+            <p style="color:#fc2779; font-weight:bold; margin-top:15px;">Gift Card Unlocked! 🛍️</p>
+        </div>
+
+    </div>
+
+    <div class="final-msg" id="final-msg">Perfect! It's a date. 🎀💖</div>
+
+    <script>
+        // --- 1. COUNTDOWN TIMER ---
+        function updateTimer() {
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            // Set date to Feb 14th of the current year
+            let valentineDate = new Date(`February 14, ${currentYear} 00:00:00`);
+
+            // If Feb 14 has passed this year, count to next year (optional, but good safety)
+            if (now > valentineDate) {
+                valentineDate = new Date(`February 14, ${currentYear + 1} 00:00:00`);
+            }
+
+            const diff = valentineDate - now;
+
+            if (diff <= 0) {
+                document.getElementById("timer").innerText = "Happy Valentine's Day! 💖";
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById("timer").innerText = 
+                `Valentine's in: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+        setInterval(updateTimer, 1000);
+        updateTimer(); // Run immediately
+
+        // --- 2. CARD LOGIC ---
+        function handleChoice(type) {
+            const step1 = document.getElementById('step1');
+            const step2Hers = document.getElementById('step2-hers');
+            const step2Mine = document.getElementById('step2-mine');
+
+            // Add text to the cards before they vanish (Animation effect)
+            const cards = document.querySelectorAll('.card');
+            if(type === 'hers') {
+                cards[0].style.backgroundImage = 'none';
+                cards[0].style.backgroundColor = '#ffb7c5';
+                cards[0].style.color = 'white';
+                cards[0].innerText = "I will choose!";
+            } else {
+                cards[1].style.backgroundImage = 'none';
+                cards[1].style.backgroundColor = '#ffb7c5';
+                cards[1].style.color = 'white';
+                cards[1].innerText = "You will choose!";
+            }
+
+            // Wait 1 second, then switch scenes
+            setTimeout(() => {
+                step1.style.display = 'none';
+                
+                if (type === 'hers') {
+                    step2Hers.style.display = 'flex'; // Show 3 options
+                } else {
+                    step2Mine.style.display = 'flex'; // Show Nykaa
+                    document.getElementById('final-msg').innerText = "You own a NYKAA Gift Card! 💄";
+                    document.getElementById('final-msg').style.opacity = '1';
+                    createBows(); // Extra confetti for the win
+                }
+            }, 800);
+        }
+
+        // --- 3. FINAL SELECTION (FOR BAG/SHOE/MAKEUP) ---
+        function selectFinal(item) {
+            const msg = document.getElementById('final-msg');
+            msg.innerText = "Yay! getting you " + item;
+            msg.style.opacity = '1';
+            createBows();
+        }
+
+        // --- 4. FLOATING BACKGROUND ---
+        function createBows() {
+            const icons = ['🎀', '🌸', '💖', '🐱'];
+            const bow = document.createElement('div');
+            bow.classList.add('floating');
+            bow.innerText = icons[Math.floor(Math.random() * icons.length)];
+            bow.style.left = Math.random() * 100 + 'vw';
+            bow.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            document.body.appendChild(bow);
+            setTimeout(() => bow.remove(), 6000);
+        }
+        setInterval(createBows, 500);
+    </script>
+</body>
+</html>
