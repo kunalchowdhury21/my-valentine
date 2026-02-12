@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Tiny Surprise 🎀</title>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <title>For Nilakshi 🎀</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --pink: #ffb7c5;
             --dark-pink: #ff8fa3;
-            --hello-kitty-red: #ff0000;
+            --nykaa-pink: #fc2779;
         }
 
         body {
             background-color: #fff0f3;
-            background-image: url('https://www.transparenttextures.com/patterns/cubes.png'); /* Subtle texture */
+            background-image: url('https://www.transparenttextures.com/patterns/cubes.png');
             font-family: 'Quicksand', sans-serif;
             display: flex;
             flex-direction: column;
@@ -22,31 +22,58 @@
             justify-content: center;
             min-height: 100vh;
             margin: 0;
-            overflow: hidden;
+            overflow-x: hidden; /* Prevent scrollbar during animations */
+        }
+
+        /* Countdown Timer Styles */
+        #timer {
+            font-family: 'Quicksand', sans-serif;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: 2px solid var(--pink);
+            color: var(--dark-pink);
+            font-weight: bold;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            animation: pulse 2s infinite;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 30px;
             z-index: 10;
         }
 
         h1 {
             font-family: 'Pacifico', cursive;
             color: var(--dark-pink);
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             text-shadow: 2px 2px white;
+            margin: 0;
         }
 
-        .card-container {
+        /* MAIN CONTAINER FOR CARDS */
+        .main-stage {
+            min-height: 350px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        /* --- STEP 1: The Initial Choice --- */
+        .choice-container {
             display: flex;
             gap: 30px;
             z-index: 10;
+            transition: opacity 0.5s ease;
         }
 
         .card {
-            width: 200px;
-            height: 280px;
+            width: 180px;
+            height: 260px;
             background: white;
             border: 5px solid var(--pink);
             border-radius: 20px;
@@ -55,23 +82,23 @@
             align-items: center;
             justify-content: center;
             font-family: 'Pacifico', cursive;
-            font-size: 1.5rem;
-            color: transparent; /* Text hidden at first */
-            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 1.4rem;
+            text-align: center;
+            color: transparent;
+            transition: all 0.4s ease;
             position: relative;
             box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            background-image: url('https://img.icons8.com/color/96/hello-kitty.png'); /* Placeholder Hello Kitty icon */
+            background-image: url('https://img.icons8.com/color/96/hello-kitty.png');
             background-repeat: no-repeat;
-            background-position: center 30%;
+            background-position: center 40%;
             background-size: 80px;
         }
 
-        /* Decorative Bow on cards */
         .card::after {
             content: '🎀';
             position: absolute;
             top: -20px;
-            font-size: 40px;
+            font-size: 35px;
         }
 
         .card:hover {
@@ -79,84 +106,17 @@
             box-shadow: 0 15px 30px rgba(255, 183, 197, 0.4);
         }
 
-        /* Revealed State */
-        .card.revealed {
-            background-image: none;
-            background-color: var(--pink);
-            color: white;
-            transform: rotateY(360deg);
+        /* --- STEP 2: The Shopping Options (Hidden Initially) --- */
+        .shopping-container {
+            display: none; /* Hidden by default */
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            animation: slideUp 0.8s ease-out;
         }
 
-        .message {
-            margin-top: 40px;
-            font-size: 1.2rem;
-            color: var(--dark-pink);
-            font-weight: 600;
-            opacity: 0;
-            transition: opacity 1s;
-        }
-
-        /* Floating Bows Animation */
-        .floating {
-            position: absolute;
-            font-size: 24px;
-            animation: floatUp 6s infinite linear;
-            opacity: 0.6;
-            z-index: 1;
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(110vh) rotate(0deg); }
-            100% { transform: translateY(-10vh) rotate(360deg); }
-        }
-    </style>
-</head>
-<body>
-
-    <div class="header">
-        <h1>For My Favorite Person...</h1>
-        <p style="color: #ff8fa3;">Pick a mystery card Nilakshi 🌸</p>
-    </div>
-
-    <div class="card-container">
-        <div class="card" onclick="reveal(this, 'I will choose!')"></div>
-        <div class="card" onclick="reveal(this, 'You will choose!')"></div>
-    </div>
-
-    <div class="message" id="final-msg">Perfect! It's a date. 🎀💖</div>
-
-    <script>
-        function reveal(el, text) {
-            // Disable further clicks
-            if(el.classList.contains('revealed')) return;
-            
-            // Show the text
-            el.innerText = text;
-            el.classList.add('revealed');
-            
-            // Show the bottom message
-            document.getElementById('final-msg').style.opacity = '1';
-
-            // Optional: Fade out the other card
-            const cards = document.querySelectorAll('.card');
-            cards.forEach(c => {
-                if(c !== el) c.style.opacity = '0.3';
-            });
-        }
-
-        // Create floating bows
-        function createBows() {
-            const icons = ['🎀', '🌸', '💖', '🐱'];
-            const bow = document.createElement('div');
-            bow.classList.add('floating');
-            bow.innerText = icons[Math.floor(Math.random() * icons.length)];
-            bow.style.left = Math.random() * 100 + 'vw';
-            bow.style.animationDuration = (Math.random() * 3 + 4) + 's';
-            document.body.appendChild(bow);
-            
-            setTimeout(() => bow.remove(), 6000);
-        }
-        setInterval(createBows, 500);
-    </script>
-</body>
-</html>
+        .shop-card {
+            width: 140px;
+            height: 180px;
+            background: white;
+            border
