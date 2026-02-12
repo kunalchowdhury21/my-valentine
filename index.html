@@ -22,10 +22,10 @@
             justify-content: center;
             min-height: 100vh;
             margin: 0;
-            overflow-x: hidden; /* Prevent scrollbar during animations */
+            overflow-x: hidden;
         }
 
-        /* Countdown Timer Styles */
+        /* TIMER */
         #timer {
             font-family: 'Quicksand', sans-serif;
             background: white;
@@ -36,12 +36,11 @@
             font-weight: bold;
             margin-bottom: 20px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            animation: pulse 2s infinite;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             z-index: 10;
         }
 
@@ -53,7 +52,6 @@
             margin: 0;
         }
 
-        /* MAIN CONTAINER FOR CARDS */
         .main-stage {
             min-height: 350px;
             display: flex;
@@ -61,9 +59,10 @@
             align-items: center;
             justify-content: center;
             width: 100%;
+            perspective: 1000px; /* For 3D effects */
         }
 
-        /* --- STEP 1: The Initial Choice --- */
+        /* --- STAGE 1: INITIAL CHOICE --- */
         .choice-container {
             display: flex;
             gap: 30px;
@@ -94,80 +93,100 @@
             background-size: 80px;
         }
 
-        .card::after {
-            content: '🎀';
-            position: absolute;
-            top: -20px;
-            font-size: 35px;
-        }
+        .card::after { content: '🎀'; position: absolute; top: -20px; font-size: 35px; }
+        .card:hover { transform: translateY(-10px) scale(1.05); }
 
-        .card:hover {
-            transform: translateY(-10px) scale(1.05);
-            box-shadow: 0 15px 30px rgba(255, 183, 197, 0.4);
-        }
-
-        /* --- STEP 2: The Shopping Options (Hidden Initially) --- */
-        .shopping-container {
-            display: none; /* Hidden by default */
+        /* --- STAGE 2A: MYSTERY BOXES (Hidden Initially) --- */
+        .mystery-container {
+            display: none;
             gap: 20px;
             flex-wrap: wrap;
             justify-content: center;
-            animation: slideUp 0.8s ease-out;
         }
 
-        .shop-card {
+        .mystery-box {
             width: 140px;
             height: 180px;
-            background: white;
-            border: 3px dashed var(--dark-pink);
+            background: var(--pink);
             border-radius: 15px;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: transform 0.3s;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            position: relative;
         }
 
-        .shop-card:hover {
-            transform: scale(1.1);
-            background: #fff5f8;
-        }
+        .mystery-box:hover { transform: scale(1.05); }
 
-        .shop-icon { font-size: 40px; margin-bottom: 10px; }
-        .shop-title { font-weight: bold; color: #555; font-size: 0.9rem; }
-        .shop-price { color: var(--dark-pink); font-family: 'Pacifico'; margin-top: 5px; }
-
-        /* --- STEP 2: The Nykaa Gift (Hidden Initially) --- */
-        .nykaa-container {
-            display: none;
+        .mystery-content {
+            display: none; /* Hidden until clicked */
             flex-direction: column;
             align-items: center;
-            animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            text-align: center;
+            animation: fadeIn 0.5s;
+        }
+        
+        .box-cover {
+            font-size: 3rem;
+            color: white;
+            animation: bounce 2s infinite;
+        }
+
+        /* Revealed Item Styles */
+        .shop-icon { font-size: 40px; margin-bottom: 5px; }
+        .shop-title { font-weight: bold; color: #555; font-size: 0.9rem; }
+        .shop-price { color: var(--dark-pink); font-family: 'Pacifico'; }
+
+        /* --- STAGE 2B: FLYING NYKAA CARD (Hidden Initially) --- */
+        .nykaa-container {
+            display: none; /* Flex when active */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         .nykaa-card {
-            width: 300px;
-            height: 180px;
+            width: 320px;
+            height: 200px;
             background: linear-gradient(135deg, #fc2779 0%, #ff7cae 100%);
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(252, 39, 121, 0.3);
+            border-radius: 15px;
+            box-shadow: 0 20px 50px rgba(252, 39, 121, 0.4);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 2rem;
-            font-family: 'Pacifico';
             position: relative;
-            overflow: hidden;
             border: 2px solid white;
+            /* Animation applied via JS */
         }
-        
-        .nykaa-logo-text {
-            font-family: 'Quicksand', sans-serif;
-            font-weight: 700;
-            letter-spacing: 2px;
-            font-size: 2.5rem;
+
+        /* The Flying Animation Class */
+        .fly-in {
+            animation: flyInFromLeft 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes flyInFromLeft {
+            0% {
+                transform: translate(-100vw, 100vh) rotate(-720deg) scale(0.1);
+                opacity: 0;
+            }
+            60% {
+                transform: translate(0, 0) rotate(10deg) scale(1.1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(0, 0) rotate(0deg) scale(1);
+            }
+        }
+
+        .nykaa-logo {
+            font-family: 'Arial', sans-serif;
+            font-weight: 900;
+            font-size: 3rem;
+            letter-spacing: -2px;
         }
 
         .final-msg {
@@ -179,37 +198,17 @@
             transition: opacity 1s;
         }
 
-        /* Animations */
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes popIn {
-            from { transform: scale(0); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-            100% { transform: scale(1); }
-        }
-        @keyframes floatUp {
-            0% { transform: translateY(110vh) rotate(0deg); }
-            100% { transform: translateY(-10vh) rotate(360deg); }
-        }
-
-        .floating {
-            position: absolute;
-            font-size: 24px;
-            animation: floatUp 6s infinite linear;
-            opacity: 0.6;
-            z-index: 1;
-        }
+        /* General Keyframes */
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes floatUp { 0% { transform: translateY(110vh) rotate(0deg); } 100% { transform: translateY(-10vh) rotate(360deg); } }
+        
+        .floating { position: absolute; font-size: 24px; animation: floatUp 6s infinite linear; opacity: 0.6; z-index: 1; }
     </style>
 </head>
 <body>
 
-    <div id="timer">Valentine's in: 00d 00h 00m 00s</div>
+    <div id="timer">Loading timer...</div>
 
     <div class="header">
         <h1>For My Favorite Person...</h1>
@@ -223,110 +222,121 @@
             <div class="card" onclick="handleChoice('mine')"></div>
         </div>
 
-        <div class="shopping-container" id="step2-hers">
-            <div class="shop-card" onclick="selectFinal('A Perfect Bag! 👜')">
-                <div class="shop-icon">👜</div>
-                <div class="shop-title">Perfect Bag</div>
-                <div class="shop-price">1500</div>
+        <div class="mystery-container" id="step2-hers">
+            <div class="mystery-box" onclick="revealMystery(this, '👜', 'Perfect Bag', '1500')">
+                <div class="box-cover">❓</div>
             </div>
-            <div class="shop-card" onclick="selectFinal('Cinderella Shoes! 👠')">
-                <div class="shop-icon">👠</div>
-                <div class="shop-title">Dream Shoes</div>
-                <div class="shop-price">2000</div>
+            <div class="mystery-box" onclick="revealMystery(this, '👠', 'Dream Shoes', '2000')">
+                <div class="box-cover">❓</div>
             </div>
-            <div class="shop-card" onclick="selectFinal('Makeup Kit! 💄')">
-                <div class="shop-icon">💄</div>
-                <div class="shop-title">Any Makeup</div>
-                <div class="shop-price">1500</div>
+            <div class="mystery-box" onclick="revealMystery(this, '💄', 'Makeup Kit', '1500')">
+                <div class="box-cover">❓</div>
             </div>
         </div>
 
         <div class="nykaa-container" id="step2-mine">
-            <div class="nykaa-card">
-                <span class="nykaa-logo-text">NYKAA</span>
+            <div class="nykaa-card" id="nykaa-card-el">
+                <div class="nykaa-logo">NYKAA</div>
             </div>
-            <p style="color:#fc2779; font-weight:bold; margin-top:15px;">Gift Card Unlocked! 🛍️</p>
         </div>
 
     </div>
 
-    <div class="final-msg" id="final-msg">Perfect! It's a date. 🎀💖</div>
+    <div class="final-msg" id="final-msg"></div>
 
     <script>
-        // --- 1. COUNTDOWN TIMER ---
+        // --- TIMER LOGIC ---
         function updateTimer() {
             const now = new Date();
-            const currentYear = now.getFullYear();
-            // Set date to Feb 14th of the current year
-            let valentineDate = new Date(`February 14, ${currentYear} 00:00:00`);
-
-            // If Feb 14 has passed this year, count to next year (optional, but good safety)
-            if (now > valentineDate) {
-                valentineDate = new Date(`February 14, ${currentYear + 1} 00:00:00`);
+            const year = now.getFullYear();
+            // Target Feb 14th of current year
+            let vDay = new Date(`February 14, ${year} 00:00:00`);
+            
+            // If passed, target next year
+            if (now > vDay) {
+                vDay = new Date(`February 14, ${year + 1} 00:00:00`);
             }
 
-            const diff = valentineDate - now;
-
-            if (diff <= 0) {
+            const diff = vDay - now;
+            
+            if(diff <= 0) {
                 document.getElementById("timer").innerText = "Happy Valentine's Day! 💖";
                 return;
             }
 
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-            document.getElementById("timer").innerText = 
-                `Valentine's in: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById("timer").innerText = `Valentine's in: ${d}d ${h}h ${m}m ${s}s`;
         }
         setInterval(updateTimer, 1000);
-        updateTimer(); // Run immediately
+        updateTimer();
 
-        // --- 2. CARD LOGIC ---
+        // --- CHOICE LOGIC ---
         function handleChoice(type) {
             const step1 = document.getElementById('step1');
             const step2Hers = document.getElementById('step2-hers');
             const step2Mine = document.getElementById('step2-mine');
+            const msg = document.getElementById('final-msg');
 
-            // Add text to the cards before they vanish (Animation effect)
+            // 1. Reveal Text on the initial card
             const cards = document.querySelectorAll('.card');
             if(type === 'hers') {
-                cards[0].style.backgroundImage = 'none';
-                cards[0].style.backgroundColor = '#ffb7c5';
-                cards[0].style.color = 'white';
+                cards[0].style.background = '#ffb7c5';
                 cards[0].innerText = "I will choose!";
             } else {
-                cards[1].style.backgroundImage = 'none';
-                cards[1].style.backgroundColor = '#ffb7c5';
-                cards[1].style.color = 'white';
+                cards[1].style.background = '#ffb7c5';
                 cards[1].innerText = "You will choose!";
             }
 
-            // Wait 1 second, then switch scenes
+            // 2. Transition
             setTimeout(() => {
                 step1.style.display = 'none';
-                
-                if (type === 'hers') {
-                    step2Hers.style.display = 'flex'; // Show 3 options
+
+                if(type === 'hers') {
+                    // Show Mystery Boxes
+                    step2Hers.style.display = 'flex';
+                    msg.innerText = "Tap a box to reveal your gift! 🎁";
+                    msg.style.opacity = '1';
                 } else {
-                    step2Mine.style.display = 'flex'; // Show Nykaa
-                    document.getElementById('final-msg').innerText = "You own a NYKAA Gift Card! 💄";
-                    document.getElementById('final-msg').style.opacity = '1';
-                    createBows(); // Extra confetti for the win
+                    // Show Flying Nykaa Card
+                    step2Mine.style.display = 'flex';
+                    const nykaaCard = document.getElementById('nykaa-card-el');
+                    nykaaCard.classList.add('fly-in'); // Trigger Animation
+                    
+                    msg.innerText = "You own a NYKAA Gift Card! 💄";
+                    msg.style.opacity = '1';
+                    createBows();
                 }
             }, 800);
         }
 
-        // --- 3. FINAL SELECTION (FOR BAG/SHOE/MAKEUP) ---
-        function selectFinal(item) {
-            const msg = document.getElementById('final-msg');
-            msg.innerText = "Yay! getting you " + item;
-            msg.style.opacity = '1';
+        // --- MYSTERY BOX REVEAL LOGIC ---
+        function revealMystery(box, icon, title, price) {
+            // If already opened, do nothing
+            if(box.style.background === 'white') return;
+
+            // Change Style to White Card
+            box.style.background = 'white';
+            box.style.border = '3px solid var(--pink)';
+            
+            // Inject Content
+            box.innerHTML = `
+                <div class="mystery-content" style="display:flex">
+                    <div class="shop-icon">${icon}</div>
+                    <div class="shop-title">${title}</div>
+                    <div class="shop-price">₹${price}</div>
+                </div>
+            `;
+            
+            // Update Message
+            document.getElementById('final-msg').innerText = "Yay! Getting you " + title;
             createBows();
         }
 
-        // --- 4. FLOATING BACKGROUND ---
+        // --- BACKGROUND BOWS ---
         function createBows() {
             const icons = ['🎀', '🌸', '💖', '🐱'];
             const bow = document.createElement('div');
@@ -337,7 +347,7 @@
             document.body.appendChild(bow);
             setTimeout(() => bow.remove(), 6000);
         }
-        setInterval(createBows, 500);
+        setInterval(createBows, 600);
     </script>
 </body>
 </html>
