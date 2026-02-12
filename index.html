@@ -3,68 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Valentine</title>
+    <title>A Tiny Surprise 🎀</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --pink: #ffb7c5;
+            --dark-pink: #ff8fa3;
+            --hello-kitty-red: #ff0000;
+        }
+
         body {
-            background-color: #fff5f5;
+            background-color: #fff0f3;
+            background-image: url('https://www.transparenttextures.com/patterns/cubes.png'); /* Subtle texture */
+            font-family: 'Quicksand', sans-serif;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            height: 100vh;
+            justify-content: center;
+            min-height: 100vh;
             margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow: hidden;
         }
-        .container {
+
+        .header {
             text-align: center;
-            background: white;
-            padding: 3rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 50px;
             z-index: 10;
         }
-        h1 { color: #d63384; font-size: 2.5rem; }
-        p { color: #555; font-size: 1.2rem; }
-        .heart {
-            color: #ff4d6d;
-            font-size: 50px;
-            animation: beat 1s infinite;
+
+        h1 {
+            font-family: 'Pacifico', cursive;
+            color: var(--dark-pink);
+            font-size: 2.5rem;
+            text-shadow: 2px 2px white;
         }
-        @keyframes beat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
+
+        .card-container {
+            display: flex;
+            gap: 30px;
+            z-index: 10;
         }
-        .floating-heart {
+
+        .card {
+            width: 200px;
+            height: 280px;
+            background: white;
+            border: 5px solid var(--pink);
+            border-radius: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Pacifico', cursive;
+            font-size: 1.5rem;
+            color: transparent; /* Text hidden at first */
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            background-image: url('https://img.icons8.com/color/96/hello-kitty.png'); /* Placeholder Hello Kitty icon */
+            background-repeat: no-repeat;
+            background-position: center 30%;
+            background-size: 80px;
+        }
+
+        /* Decorative Bow on cards */
+        .card::after {
+            content: '🎀';
             position: absolute;
-            color: rgba(255, 77, 109, 0.2);
-            font-size: 20px;
-            animation: float 5s infinite linear;
+            top: -20px;
+            font-size: 40px;
         }
-        @keyframes float {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(255, 183, 197, 0.4);
+        }
+
+        /* Revealed State */
+        .card.revealed {
+            background-image: none;
+            background-color: var(--pink);
+            color: white;
+            transform: rotateY(360deg);
+        }
+
+        .message {
+            margin-top: 40px;
+            font-size: 1.2rem;
+            color: var(--dark-pink);
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+
+        /* Floating Bows Animation */
+        .floating {
+            position: absolute;
+            font-size: 24px;
+            animation: floatUp 6s infinite linear;
+            opacity: 0.6;
+            z-index: 1;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(110vh) rotate(0deg); }
+            100% { transform: translateY(-10vh) rotate(360deg); }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="heart">❤️</div>
-        <h1>Happy Valentine's Day!</h1>
-        <p>I built this site just for you because you make my life better every single day.</p>
-        <p><i>"You’re my favorite person to debug life with."</i></p>
+
+    <div class="header">
+        <h1>For My Favorite Person...</h1>
+        <p style="color: #ff8fa3;">Pick a mystery card to decide our Valentine's plan 🌸</p>
     </div>
 
+    <div class="card-container">
+        <div class="card" onclick="reveal(this, 'I will choose!')"></div>
+        <div class="card" onclick="reveal(this, 'You will choose!')"></div>
+    </div>
+
+    <div class="message" id="final-msg">Perfect! It's a date. 🎀💖</div>
+
     <script>
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.classList.add('floating-heart');
-            heart.innerHTML = '❤️';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = Math.random() * 3 + 2 + 's';
-            document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), 5000);
+        function reveal(el, text) {
+            // Disable further clicks
+            if(el.classList.contains('revealed')) return;
+            
+            // Show the text
+            el.innerText = text;
+            el.classList.add('revealed');
+            
+            // Show the bottom message
+            document.getElementById('final-msg').style.opacity = '1';
+
+            // Optional: Fade out the other card
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(c => {
+                if(c !== el) c.style.opacity = '0.3';
+            });
         }
-        setInterval(createHeart, 300);
+
+        // Create floating bows
+        function createBows() {
+            const icons = ['🎀', '🌸', '💖', '🐱'];
+            const bow = document.createElement('div');
+            bow.classList.add('floating');
+            bow.innerText = icons[Math.floor(Math.random() * icons.length)];
+            bow.style.left = Math.random() * 100 + 'vw';
+            bow.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            document.body.appendChild(bow);
+            
+            setTimeout(() => bow.remove(), 6000);
+        }
+        setInterval(createBows, 500);
     </script>
 </body>
 </html>
