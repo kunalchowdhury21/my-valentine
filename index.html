@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>For Nilakshi 🌹</title>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -11,6 +11,8 @@
             --dark-pink: #ff8fa3;
             --rose-red: #e02142;
         }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             background-color: #fff0f3;
@@ -22,7 +24,9 @@
             justify-content: center;
             min-height: 100vh;
             margin: 0;
+            padding: 20px;
             overflow: hidden;
+            touch-action: manipulation;
         }
 
         /* --- WELCOME OVERLAY --- */
@@ -35,128 +39,150 @@
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            transition: opacity 1s ease-out;
+            transition: opacity 0.8s ease-out;
+            padding: 20px;
         }
-
-        .rose-container {
-            cursor: pointer;
-            transition: transform 0.3s;
-            text-align: center;
-        }
-
-        .rose-container:hover { transform: scale(1.1); }
 
         .rose-img {
-            width: 200px;
+            width: 150px;
             filter: drop-shadow(0 10px 15px rgba(224, 33, 66, 0.3));
             animation: breathe 3s infinite ease-in-out;
         }
 
         .click-text {
-            margin-top: 20px;
+            margin-top: 25px;
             font-family: 'Pacifico', cursive;
             color: var(--rose-red);
-            font-size: 1.5rem;
+            font-size: 1.2rem;
+            text-align: center;
+            line-height: 1.5;
         }
 
         @keyframes breathe {
-            0%, 100% { transform: scale(1); opacity: 0.9; }
-            50% { transform: scale(1.05); opacity: 1; }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
 
-        /* --- MAIN CONTENT --- */
+        /* --- UI ELEMENTS --- */
         #timer {
             background: white;
-            padding: 10px 20px;
+            padding: 8px 15px;
             border-radius: 50px;
             border: 2px solid var(--pink);
             color: var(--dark-pink);
             font-weight: bold;
-            margin-bottom: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             z-index: 100;
         }
 
-        .header { text-align: center; margin-bottom: 20px; z-index: 10; }
-        h1 { font-family: 'Pacifico', cursive; color: var(--dark-pink); font-size: 2.2rem; text-shadow: 2px 2px white; margin: 0; }
+        .header h1 { 
+            font-family: 'Pacifico', cursive; 
+            color: var(--dark-pink); 
+            font-size: 1.8rem; 
+            margin: 0; 
+        }
 
         .main-stage {
-            min-height: 350px;
+            width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            width: 100%;
-            perspective: 1000px;
+            min-height: 300px;
         }
 
-        /* STAGE 1: CHOICE */
-        .choice-container { display: flex; gap: 30px; z-index: 10; }
+        /* --- CARDS --- */
+        .choice-container { 
+            display: flex; 
+            gap: 15px; 
+            width: 100%; 
+            justify-content: center;
+        }
+
         .card {
-            width: 180px; height: 260px; background: white; border: 5px solid var(--pink); border-radius: 20px;
-            cursor: pointer; display: flex; align-items: center; justify-content: center; font-family: 'Pacifico', cursive;
-            font-size: 1.4rem; text-align: center; color: transparent; transition: all 0.4s ease; position: relative;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05); background-image: url('https://img.icons8.com/color/96/hello-kitty.png');
-            background-repeat: no-repeat; background-position: center 40%; background-size: 80px;
+            width: 140px; 
+            height: 200px; 
+            background: white; 
+            border: 4px solid var(--pink); 
+            border-radius: 15px;
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-family: 'Pacifico', cursive;
+            font-size: 1.1rem; 
+            text-align: center; 
+            color: transparent; 
+            transition: all 0.4s ease; 
+            position: relative;
+            background-image: url('https://img.icons8.com/color/96/hello-kitty.png');
+            background-repeat: no-repeat; 
+            background-position: center 40%; 
+            background-size: 60px;
         }
-        .card::after { content: '🎀'; position: absolute; top: -20px; font-size: 35px; }
-        .card:hover { transform: translateY(-10px) scale(1.05); }
 
-        /* STAGE 2A: MYSTERY BOXES */
-        .mystery-container { display: none; gap: 20px; flex-wrap: wrap; justify-content: center; }
+        .card::after { content: '🎀'; position: absolute; top: -15px; font-size: 28px; }
+
+        /* --- STAGE 2A: MYSTERY BOXES --- */
+        .mystery-container { display: none; gap: 10px; flex-wrap: wrap; justify-content: center; width: 100%; }
         .mystery-box {
-            width: 140px; height: 180px; background: var(--pink); border-radius: 15px; display: flex;
-            align-items: center; justify-content: center; cursor: pointer; transition: transform 0.6s; box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            width: 100px; height: 140px; background: var(--pink); border-radius: 12px; display: flex;
+            align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 5px 10px rgba(0,0,0,0.1);
         }
-        .box-cover { font-size: 3rem; color: white; animation: bounce 2s infinite; }
+        .box-cover { font-size: 2rem; color: white; }
 
-        /* STAGE 2B: NYKAA CARD */
-        .nykaa-container { display: none; flex-direction: column; align-items: center; justify-content: center; }
+        /* --- STAGE 2B: NYKAA CARD --- */
+        .nykaa-container { display: none; width: 100%; justify-content: center; }
         .nykaa-card {
-            width: 320px; height: 200px; background: linear-gradient(135deg, #fc2779 0%, #ff7cae 100%);
-            border-radius: 15px; box-shadow: 0 20px 50px rgba(252, 39, 121, 0.4); display: flex;
-            align-items: center; justify-content: center; color: white; border: 2px solid white;
+            width: 280px; height: 160px; background: linear-gradient(135deg, #fc2779 0%, #ff7cae 100%);
+            border-radius: 15px; display: flex; align-items: center; justify-content: center; 
+            color: white; border: 2px solid white; box-shadow: 0 15px 30px rgba(252, 39, 121, 0.3);
         }
-        .fly-in { animation: flyInFromLeft 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        
-        @keyframes flyInFromLeft {
-            0% { transform: translate(-100vw, 100vh) rotate(-720deg) scale(0.1); opacity: 0; }
+        .nykaa-logo { font-family: sans-serif; font-weight: 900; font-size: 2.8rem; letter-spacing: -2px; }
+
+        .fly-in { animation: flyIn 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes flyIn {
+            0% { transform: translate(-100vw, 50vh) rotate(-360deg) scale(0.5); opacity: 0; }
             100% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
         }
-        .nykaa-logo { font-family: 'Arial', sans-serif; font-weight: 900; font-size: 3.5rem; letter-spacing: -2px; }
 
-        .final-msg { margin-top: 30px; font-size: 1.3rem; color: var(--dark-pink); font-weight: 700; opacity: 0; transition: opacity 1s; }
+        .final-msg { 
+            margin-top: 25px; 
+            font-size: 1.1rem; 
+            color: var(--dark-pink); 
+            font-weight: 700; 
+            opacity: 0; 
+            text-align: center;
+            padding: 0 10px;
+        }
 
-        /* UTILS */
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-        .floating { position: absolute; font-size: 24px; animation: floatUp 6s infinite linear; opacity: 0.6; z-index: 1; }
-        @keyframes floatUp { 0% { transform: translateY(110vh); } 100% { transform: translateY(-10vh); } }
+        .floating { position: absolute; font-size: 20px; animation: floatUp 5s infinite linear; z-index: 1; }
+        @keyframes floatUp { 0% { transform: translateY(105vh); } 100% { transform: translateY(-10vh); } }
 
-        #youtube-player { position: absolute; width: 0; height: 0; pointer-events: none; opacity: 0; }
+        #youtube-player { position: absolute; width: 0; height: 0; opacity: 0; pointer-events: none; }
     </style>
 </head>
 <body>
 
     <div id="welcome-overlay" onclick="startSurprise()">
-        <div class="rose-container">
-            <img src="https://img.icons8.com/color/480/rose.png" class="rose-img" alt="Beautiful Rose">
-            <div class="click-text">Click the rose for a surprise, Nilakshi... 🌹</div>
-        </div>
+        <img src="https://img.icons8.com/color/480/rose.png" class="rose-img" alt="Rose">
+        <div class="click-text">Tap the rose for a surprise,<br>Nilakshi... 🌹</div>
     </div>
 
     <div id="youtube-player"></div>
-    
-    <div id="timer">Loading timer...</div>
+    <div id="timer">Loading...</div>
 
     <div class="header">
-        <h1>For My Favorite Person...</h1>
-        <p style="color: #ff8fa3;">Pick a mystery card Nilakshi 🌸</p>
+        <h1>For My Favorite...</h1>
+        <p style="color: #ff8fa3; margin: 5px 0 15px 0;">Pick a mystery card Nilakshi 🌸</p>
     </div>
 
     <div class="main-stage">
         <div class="choice-container" id="step1">
-            <div class="card" onclick="handleChoice('hers')"></div>
-            <div class="card" onclick="handleChoice('mine')"></div>
+            <div class="card" onclick="handleChoice(this, 'hers')"></div>
+            <div class="card" onclick="handleChoice(this, 'mine')"></div>
         </div>
 
         <div class="mystery-container" id="step2-hers">
@@ -173,78 +199,97 @@
     <div class="final-msg" id="final-msg"></div>
 
     <script>
-        // --- YOUTUBE PLAYER ---
+        // --- YOUTUBE MOBILE FIX ---
         var player;
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('youtube-player', {
                 height: '0', width: '0',
                 videoId: 'G_x-UJNEmEU',
-                playerVars: { 'autoplay': 0, 'loop': 1, 'playlist': 'G_x-UJNEmEU' }
+                playerVars: { 
+                    'autoplay': 1, 
+                    'controls': 0, 
+                    'loop': 1, 
+                    'playlist': 'G_x-UJNEmEU',
+                    'playsinline': 1 // Crucial for mobile
+                },
+                events: {
+                    'onReady': function(e) { e.target.mute(); e.target.playVideo(); } 
+                }
             });
         }
 
-        // Load YT API
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        document.body.appendChild(tag);
 
-        // --- OVERLAY LOGIC ---
         function startSurprise() {
+            // Unmute and play on user click
+            if(player) {
+                player.unMute();
+                player.setVolume(100);
+                player.playVideo();
+            }
             document.getElementById('welcome-overlay').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('welcome-overlay').style.display = 'none';
-            }, 1000);
-            if(player && player.playVideo) player.playVideo(); // Start "Aao Naa"
+            setTimeout(() => document.getElementById('welcome-overlay').style.display = 'none', 800);
         }
 
         // --- TIMER ---
         function updateTimer() {
-            const vDay = new Date(`February 14, ${new Date().getFullYear()} 00:00:00`);
+            const vDay = new Date(`February 14, 2026 00:00:00`);
             const diff = vDay - new Date();
             if(diff <= 0) { document.getElementById("timer").innerText = "Happy Valentine's Day! 💖"; return; }
             const d = Math.floor(diff/86400000), h = Math.floor((diff%86400000)/3600000), m = Math.floor((diff%3600000)/60000), s = Math.floor((diff%60000)/1000);
-            document.getElementById("timer").innerText = `Valentine's in: ${d}d ${h}h ${m}m ${s}s`;
+            document.getElementById("timer").innerText = `${d}d ${h}h ${m}m ${s}s to Valentine's`;
         }
         setInterval(updateTimer, 1000);
 
-        function handleChoice(type) {
-            const cards = document.querySelectorAll('.card');
-            if(type === 'hers') { cards[0].style.background = '#ffb7c5'; cards[0].innerText = "I will choose!"; } 
-            else { cards[1].style.background = '#ffb7c5'; cards[1].innerText = "You will choose!"; }
+        // --- CARD LOGIC WITH DELAY ---
+        function handleChoice(cardEl, type) {
+            // 1. Reveal the text on the clicked card immediately
+            cardEl.style.background = '#ffb7c5';
+            cardEl.style.color = 'white';
+            cardEl.innerText = (type === 'hers') ? "I will choose!" : "You will choose!";
+            
+            // Fade out the other card
+            const allCards = document.querySelectorAll('.card');
+            allCards.forEach(c => { if(c !== cardEl) c.style.opacity = '0.2'; });
 
+            // 2. Wait for 1.5 seconds so Nilakshi can see the choice
             setTimeout(() => {
                 document.getElementById('step1').style.display = 'none';
+                const msg = document.getElementById('final-msg');
+                msg.style.opacity = '1';
+
                 if(type === 'hers') {
                     document.getElementById('step2-hers').style.display = 'flex';
-                    document.getElementById('final-msg').innerText = "Tap a box Nilakshi! 🎁";
+                    msg.innerText = "Tap a mystery box! 🎁";
                 } else {
                     document.getElementById('step2-mine').style.display = 'flex';
                     document.getElementById('nykaa-card-el').classList.add('fly-in');
-                    document.getElementById('final-msg').innerText = "You own a NYKAA Gift Card! 💄";
+                    msg.innerText = "You own a NYKAA Gift Card! 💄";
                 }
-                document.getElementById('final-msg').style.opacity = '1';
                 createBows();
-            }, 800);
+            }, 1500); 
         }
 
         function revealMystery(box, icon, title, price) {
             if(box.style.background === 'white') return;
-            box.style.background = 'white'; box.style.border = '3px solid var(--pink)';
-            box.innerHTML = `<div style="display:flex;flex-direction:column;align-items:center;"><div style="font-size:40px">${icon}</div><div style="font-weight:bold;color:#555;font-size:0.9rem">${title}</div><div style="color:var(--dark-pink);font-family:'Pacifico'">₹${price}</div></div>`;
+            box.style.background = 'white'; box.style.border = '2px solid var(--pink)';
+            box.innerHTML = `<div style="display:flex;flex-direction:column;align-items:center;animation:fadeIn 0.5s"><div style="font-size:30px">${icon}</div><div style="font-weight:bold;color:#555;font-size:0.75rem">${title}</div><div style="color:var(--dark-pink);font-size:0.8rem">₹${price}</div></div>`;
             document.getElementById('final-msg').innerText = "Yay! Getting you " + title;
         }
 
         function createBows() {
-            const bow = document.createElement('div');
-            bow.classList.add('floating');
-            bow.innerText = ['🎀', '🌸', '💖', '🌹', '🐱'][Math.floor(Math.random()*5)];
-            bow.style.left = Math.random()*100+'vw';
-            bow.style.animationDuration = (Math.random()*3+4)+'s';
-            document.body.appendChild(bow);
-            setTimeout(() => bow.remove(), 6000);
+            const icons = ['🎀', '🌸', '💖', '🌹'];
+            setInterval(() => {
+                const bow = document.createElement('div');
+                bow.classList.add('floating');
+                bow.innerText = icons[Math.floor(Math.random()*icons.length)];
+                bow.style.left = Math.random()*90+'vw';
+                document.body.appendChild(bow);
+                setTimeout(() => bow.remove(), 5000);
+            }, 600);
         }
-        setInterval(createBows, 600);
     </script>
 </body>
 </html>
